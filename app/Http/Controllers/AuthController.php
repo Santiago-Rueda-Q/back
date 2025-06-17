@@ -10,7 +10,17 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 
 {
-    //
+    /**
+     * Handle user registration.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     *  @OA\Post(
+     *      path="/api/register",
+     *      tags={"Auth"},
+     *      summary="Register a new user",
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -38,6 +48,16 @@ class AuthController extends Controller
         ], 201);
     }
 
+    /**
+     * Handle user login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     *   @OA\Post(
+     *      path="/api/login",
+     *      tags={"Auth"},
+     *      summary="Login a user",
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -60,6 +80,16 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Handle user logout.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     *   @OA\Post(
+     *      path="/api/logout",
+     *      tags={"Auth"},
+     *      summary="Logout a user",
+     */
     public function logout(Request $request)
     {
         $token = $request->user()->currentAccessToken();
