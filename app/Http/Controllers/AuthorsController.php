@@ -12,6 +12,29 @@ class AuthorsController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    /**
+     *  Display a listing of the resource.
+     *  @return \Illuminate\Http\Response
+     *  @throws \Exception
+     *  @OA\Get(
+     *      path="/api/authors",
+     *      tags={"Authors"},
+     *      summary="Get all authors",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Returns a list of authors",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Author")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Error retrieving authors"
+     *      )
+     *  )
+     */
     public function index()
     {
 
@@ -33,26 +56,32 @@ class AuthorsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Store a newly created resource in storage.
+     *  @param \Illuminate\Http\Request $request
+     *  @return \Illuminate\Http\Response
+     *  @throws \Illuminate\Validation\ValidationException
+     *  @OA\Post(
+     *      path="/api/authors",
+     *      tags={"Authors"},
+     *      summary="Create a new author",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"nombre", "email"},
+     *              @OA\Property(property="nombre", type="string", example="John Doe"),
+     *
      */
     public function store(Request $request)
     {
-        /*return $request;
-
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:authors,email',
-            'biografia' => 'nullable|string',
-        ]); */
 
         $author = new Author();
         $author->nombre = $request->input('nombre');
-        $author->email = $request->input('email'); 
+        $author->email = $request->input('email');
         $author->biografia = $request->input('biografia');
         $author->save();
 
         return response()->json(['message' => 'Autor creado correctamente', 'author' => $author], 201);
-        
+
     }
 
 

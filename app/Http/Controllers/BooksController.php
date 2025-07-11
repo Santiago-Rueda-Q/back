@@ -85,7 +85,7 @@ class BooksController extends Controller
      */
     public function destroy(string $id)
     {
-    
+
         try {
         $Books = Book::findOrFail($id);
         $Books->delete();
@@ -94,4 +94,11 @@ class BooksController extends Controller
         return response()->json(['error' => 'Book no encontrado', 'message' => $e->getMessage()], 404);
     }
     }
+
+    public function __construct()
+    {
+        $this->middleware('permission:delete books')->only('destroy');
+        $this->middleware('permission:edit books')->only(['update', 'store']);
+    }
+
 }
